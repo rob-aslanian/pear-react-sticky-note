@@ -1,1 +1,0 @@
-# pear-react-sticky-note
