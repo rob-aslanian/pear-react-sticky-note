@@ -10,8 +10,6 @@ import { generateDefaultNote } from "./utilities/defaultNote";
 const { Content, Header, Sider } = Layout;
 const { Title } = Typography;
 
-Pear.updates(() => Pear.reload());
-
 const App = () => {
   const peersContent = useContext(PeersContext);
   const noteContext = useContext(NoteContext);
