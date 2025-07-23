@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import { randomColor } from "./randomColor";
 
-export const generateDefaultNote = () => {
+export const generateDefaultNote = (notes) => {
   return {
     id: crypto.randomUUID(),
     text: "",
@@ -9,7 +9,7 @@ export const generateDefaultNote = () => {
     y: +Pear.config.options.gui.height / 2 - 150,
     width: 200,
     height: 200,
-    zIndex: 0,
+    zIndex: notes?.length ? notes?.length + 1 : 0,
     color: randomColor(),
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),

@@ -20,7 +20,6 @@ const App = () => {
 
   useEffect(() => {
     setPeers(peersContent.peers);
-    console.log(peersContent.peers);
   }, [peersContent.peers]);
 
   useEffect(() => {
@@ -32,9 +31,9 @@ const App = () => {
   }, [notes]);
 
   const addNote = () => {
-    const newNote = generateDefaultNote();
-    setNotes([...notes, newNote]);
-    noteContext.updateNotes([...notes, newNote]);
+    const newNote = generateDefaultNote(notes?.length);
+    setNotes([...(notes || []), newNote]);
+    noteContext.updateNotes([...(notes || []), newNote]);
   };
 
   const updateNote = (id, data) => {
@@ -64,6 +63,7 @@ const App = () => {
           >
             🗒️ Sticky Notes
           </${Title}>
+
           <${Button}
             type="button"
             onClick=${addNote}
@@ -74,6 +74,7 @@ const App = () => {
           </${Button}>
         </${Row}>
       </${Header}>
+
       <${Layout} style=${{ margin: "1rem" }}>
         <${Content} style=${{ paddingRight: "0.5rem" }}>
           <${NoteBoard}
@@ -82,6 +83,7 @@ const App = () => {
             onDelete=${deleteNote}
           />
         </${Content}>
+
         <${Sider}
           width="35%"
           peers=${peers}
@@ -94,7 +96,7 @@ const App = () => {
         </${Sider}>
       </${Layout}>
     </${Layout}>
-  `;
+`;
 };
 
 export default App;

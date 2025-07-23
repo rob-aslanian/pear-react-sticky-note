@@ -3,14 +3,22 @@ import { html } from "htm/react";
 import PeerItem from "./PeerItem";
 const { Panel } = Collapse;
 
-export default () => {
+export default ({ peers }) => {
   return html`
-    <${Collapse}  >
-        <${Panel} header="This is panel header 1" key="1">
-            <${Row}  justify="space-between">
-                <${PeerItem} />
+    <${Collapse}>
+        ${peers.map(
+          (peer) => html`
+            <${Panel}
+            className="ellipsis"
+            header=${"Peer: " + peer.key}
+            key=${peer.key}
+            >
+            <${Row} wrap justify="space-between">
+                <${PeerItem} hyperdrive=${peer.hyperdrive} />
             </${Row}>
-        </${Panel}>
+            </${Panel}>
+        `,
+        )}
     </${Collapse}>
-    `;
+`;
 };

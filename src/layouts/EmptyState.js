@@ -7,12 +7,8 @@ const { Title, Text } = Typography;
 export default () => {
   return html`
     <div
+      className="center-content"
       style=${{
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
         color: "#999",
         textAlign: "center",
       }}

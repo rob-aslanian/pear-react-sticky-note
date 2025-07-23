@@ -7,16 +7,11 @@ export default ({ peers }) => {
   return html`
     <div style=${{ padding: "1rem", height: "100%" }}>
       ${peers?.length
-        ? html`<${PeerTitle} peers=${peers} /> <${PeersCollapse} />`
+        ? html`<${PeerTitle} peers=${peers} />
+            <${PeersCollapse} peers=${peers} />`
         : html`<${Empty}
             description="No peers connected"
-            style=${{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              height: "100%",
-            }}
+            className="center-content"
           />`}
     </div>
   `;

@@ -8,7 +8,7 @@ export default function PeerTitle({ peers }) {
     margin: "2rem",
     textAlign: "center",
   }}>
-      ${"Peers:" + peers.length}
+      ${"Peers: " + peers.length}
     </${Title}>
   `;
 }
