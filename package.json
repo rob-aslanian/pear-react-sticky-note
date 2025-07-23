@@ -11,8 +11,8 @@
     "type": "desktop",
     "gui": {
       "backgroundColor": "#000000",
-      "height": "500",
-      "width": "500"
+      "height": "750",
+      "width": "750"
     }
   },
   "dependencies": {
@@ -29,7 +29,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.5.0",
-    "react-resizable": "^3.0.5",
     "ws": "^7.5.10"
   }
 }

@@ -24,10 +24,28 @@ const App = () => {
     setNotes(noteContext.notes);
   }, [noteContext.notes]);
 
+  useEffect(() => {
+    noteContext.updateNotes(notes);
+  }, [notes]);
+
   const addNote = () => {
     const newNote = generateDefaultNote();
     setNotes([...notes, newNote]);
+    noteContext.updateNotes([...notes, newNote]);
   };
+
+  const updateNote = (id, data) => {
+    setNotes((notes) =>
+      notes.map((note) =>
+        note.id === id
+          ? { ...note, ...data, updatedAt: new Date().toISOString() }
+          : note,
+      ),
+    );
+  };
+
+  const deleteNote = (id) =>
+    setNotes(notes.filter((n) => n.id !== id));
 
   return html`
     <${Layout}>
@@ -42,7 +60,7 @@ const App = () => {
             Add Note
           </${Button}>
         </${Row}>
-        <${NoteBoard} notes=${notes}/>
+        <${NoteBoard} notes=${notes} onUpdate=${updateNote} onDelete=${deleteNote}/>
       </${Content}>
     </${Layout}>
   `;

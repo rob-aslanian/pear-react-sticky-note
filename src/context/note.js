@@ -23,20 +23,25 @@ function NoteProvider({ ...props }) {
   async function initNote() {
     const exists = await peers.hyperdrive.exists("/meta/notes.json");
     if (exists) return;
-    await updateNote(generateDefaultNote());
+    await addDefaultNote();
   }
 
-  async function updateNote(note) {
+  async function addDefaultNote() {
     await peers.hyperdrive.put(
       "/meta/notes.json",
-      Buffer.from(JSON.stringify([...notes, note])),
+      Buffer.from(JSON.stringify([generateDefaultNote()])),
+    );
+  }
+
+  async function updateNotes(notes) {
+    await peers.hyperdrive.put(
+      "/meta/notes.json",
+      Buffer.from(JSON.stringify([...notes])),
     );
   }
 
   async function getNotes() {
     const buf = await peers.hyperdrive.get("/meta/notes.json");
-    console.log(JSON.parse(buf), "c".repeat(100));
-
     setNotes(JSON.parse(buf));
   }
 
@@ -59,7 +64,7 @@ function NoteProvider({ ...props }) {
     <${NoteContext.Provider}
       value=${{
         notes,
-        updateNote,
+        updateNotes,
       }}
       ...${props}
     />

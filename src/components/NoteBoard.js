@@ -11,9 +11,8 @@ export default ({ notes, onUpdate, onDelete }) => {
       marginTop: 20,
     }}
   >
-    ${notes.length === 0
-      ? html`<${EmptyState} />`
-      : notes.map(
+    ${notes?.length
+      ? notes.map(
           (note) =>
             html`<${Note}
               key=${note.id}
@@ -21,6 +20,7 @@ export default ({ notes, onUpdate, onDelete }) => {
               onUpdate=${onUpdate}
               onDelete=${onDelete}
             />`,
-        )}
+        )
+      : html`<${EmptyState} />`}
   </div>`;
 };

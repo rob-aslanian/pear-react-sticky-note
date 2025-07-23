@@ -39,11 +39,9 @@ function PeersProvider({ name, topic, ...props }) {
     async function initSwarm() {
       hyperswarm.current = new Hyperswarm({
         keyPair: await corestoreRef.current.createKeyPair(
-          "first-app",
+          "pear-react-sticky-note",
         ),
       });
-
-      console.log(hyperswarm.current);
 
       Pear.teardown(async () => {
         await hyperswarm.current.destroy();

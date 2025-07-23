@@ -3,21 +3,19 @@ import { Button, Input, Tooltip } from "antd";
 import { html } from "htm/react";
 import { useState } from "react";
 import Draggable from "react-draggable";
-import { ResizableBox } from "react-resizable";
 import ColorPicker from "./ColorPicker.js";
 
-export default ({ note }) => {
+export default ({ note, onUpdate, onDelete }) => {
+  let zIndex = note.zIndex || 0;
   const [inputValue, setInputValue] = useState("");
 
   const bringToFront = () => {
-    // onUpdate(note.id, { zIndex: Date.now() });
+    zIndex += 1;
+    onUpdate(note.id, { zIndex });
   };
 
   const handleDrag = (e, data) => {
-    // onUpdate(note.id, { x: data.x, y: data.y });
-  };
-  const handleResize = (e, { size }) => {
-    // onUpdate(note.id, { width: size.width, height: size.height });
+    onUpdate(note.id, { x: data.x, y: data.y });
   };
 
   return html`
@@ -26,30 +24,24 @@ export default ({ note }) => {
       position=${{ x: note.x, y: note.y }}
       onStop=${handleDrag}
     >
-      <${ResizableBox}
-        width=${note.width}
-        height=${note.height}
-        minConstraints=${[150, 150]}
-        onResizeStop=${handleResize}
+      <div
+        className="drag-handle"
+        onClick=${bringToFront}
+         style=${{
+           background: note.color,
+           zIndex: note.zIndex,
+           position: "absolute",
+           borderRadius: 6,
+           padding: 10,
+           height: "200px",
+           width: "200px",
+           boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+           display: "flex",
+           flexDirection: "column",
+           justifyContent: "space-between",
+           cursor: "move",
+         }}
       >
-        <div
-          className="drag-handle"
-          onMouseDown=${bringToFront}
-          style=${{
-            background: note.color,
-            zIndex: note.zIndex,
-            position: "absolute",
-            borderRadius: 6,
-            padding: 10,
-            boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            cursor: "move",
-          }}
-        >
           <${Input.TextArea}
             autoSize=${{ minRows: 5, maxRows: 10 }}
             value=${inputValue}
@@ -68,7 +60,8 @@ export default ({ note }) => {
               marginTop: 5,
             }}
           >
-            <${ColorPicker} value=${"red"} />
+            <${ColorPicker} value=${note.color} onChange=${(color) =>
+    onUpdate(note.id, { color })}/>
             <${Tooltip} title="Pin on top">
               <${Button}
                 icon=${html`<${PushpinOutlined} />`}
@@ -79,12 +72,11 @@ export default ({ note }) => {
               <${Button}
                 icon=${html`<${DeleteOutlined} />`}
                 danger
-                onClick=${() => {}}
+                onClick=${() => onDelete(note.id)}
               />
             </${Tooltip}>
           </div>
-        </div>
-      </${ResizableBox}>
+      </div>
     </${Draggable}>
   `;
 };
