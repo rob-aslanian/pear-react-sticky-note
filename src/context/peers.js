@@ -50,7 +50,7 @@ function PeersProvider({ name, topic, ...props }) {
       hyperswarm.current.on("connection", async (conn, info) => {
         const key = conn.remotePublicKey.toString("hex");
         const rpc = new ProtomuxRPC(conn);
-        console.log("[connection joined]", key);
+        console.log("[connection joined]", info);
 
         corestoreRef.current.replicate(conn);
 
@@ -96,12 +96,7 @@ function PeersProvider({ name, topic, ...props }) {
     await hyperdrive.ready();
     await hyperbee.put(key, { driveKey });
 
-    setPeers((peers) => ({
-      ...peers,
-      [key]: {
-        hyperdrive,
-      },
-    }));
+    setPeers((peers) => [...peers, { key, hyperdrive }]);
   }
 
   return html`

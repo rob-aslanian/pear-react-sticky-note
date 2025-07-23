@@ -2,11 +2,12 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button, Layout, Row, Typography } from "antd";
 import { html } from "htm/react";
 import { useContext, useEffect, useState } from "react";
-import NoteBoard from "./components/NoteBoard";
 import { NoteContext } from "./context/note";
 import { PeersContext } from "./context/peers";
+import NoteBoard from "./layouts/NoteBoard";
+import PeersPanel from "./layouts/PeersPanel";
 import { generateDefaultNote } from "./utilities/defaultNote";
-const { Content } = Layout;
+const { Content, Header, Sider } = Layout;
 const { Title } = Typography;
 
 Pear.updates(() => Pear.reload());
@@ -15,9 +16,11 @@ const App = () => {
   const peersContent = useContext(PeersContext);
   const noteContext = useContext(NoteContext);
   const [notes, setNotes] = useState([]);
+  const [peers, setPeers] = useState([]);
 
   useEffect(() => {
-    // console.log(peersContent.peers);
+    setPeers(peersContent.peers);
+    console.log(peersContent.peers);
   }, [peersContent.peers]);
 
   useEffect(() => {
@@ -49,19 +52,47 @@ const App = () => {
 
   return html`
     <${Layout}>
-      <${Content} style=${{ padding: "2rem" }}>
-        <${Row} justify="space-between" align="middle">
-          <${Title}>🗒️ Sticky Notes</${Title}>
+      <${Header} style=${{ padding: "0 1rem" }}>
+        <${Row}
+          justify="space-between"
+          align="middle"
+          style=${{ margin: "1rem 0", color: "red" }}
+        >
+          <${Title}
+            level=${2}
+            style=${{ margin: 0, color: "#fafafa" }}
+          >
+            🗒️ Sticky Notes
+          </${Title}>
           <${Button}
             type="button"
             onClick=${addNote}
+            style=${{ color: "#fafafa" }}
             icon=${html`<${PlusOutlined} />`}
           >
             Add Note
           </${Button}>
         </${Row}>
-        <${NoteBoard} notes=${notes} onUpdate=${updateNote} onDelete=${deleteNote}/>
-      </${Content}>
+      </${Header}>
+      <${Layout} style=${{ margin: "1rem" }}>
+        <${Content} style=${{ paddingRight: "0.5rem" }}>
+          <${NoteBoard}
+            notes=${notes}
+            onUpdate=${updateNote}
+            onDelete=${deleteNote}
+          />
+        </${Content}>
+        <${Sider}
+          width="35%"
+          peers=${peers}
+          style=${{
+            background: "transparent",
+            border: "1px solid #ddd",
+          }}
+        >
+          <${PeersPanel} peers=${peers} />
+        </${Sider}>
+      </${Layout}>
     </${Layout}>
   `;
 };

@@ -2,12 +2,13 @@ import { Typography } from "antd";
 import { html } from "htm/react";
 const { Title } = Typography;
 
-export default function PeerTitle({ peer }) {
+export default function PeerTitle({ peers }) {
   return html`
-    <${Title} level=${3} style=${{
+    <${Title} level=${4} style=${{
     margin: "2rem",
+    textAlign: "center",
   }}>
-      Current Peer : ${peer}
+      ${"Peers:" + peers.length}
     </${Title}>
   `;
 }

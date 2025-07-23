@@ -1,6 +1,6 @@
 import { html } from "htm/react";
+import Note from "../components/Note";
 import EmptyState from "./EmptyState";
-import Note from "./Note";
 
 export default ({ notes, onUpdate, onDelete }) => {
   return html` <div
@@ -8,7 +8,6 @@ export default ({ notes, onUpdate, onDelete }) => {
       position: "relative",
       height: "80vh",
       border: "1px solid #ddd",
-      marginTop: 20,
     }}
   >
     ${notes?.length
