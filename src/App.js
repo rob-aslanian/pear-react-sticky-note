@@ -21,8 +21,8 @@ const App = () => {
   }, [peersContent.peers]);
 
   useEffect(() => {
-    setNotes([noteContext.note]);
-  }, [noteContext.note]);
+    setNotes(noteContext.notes);
+  }, [noteContext.notes]);
 
   const addNote = () => {
     const newNote = generateDefaultNote();

@@ -1,4 +1,5 @@
 import { html } from "htm/react";
+import EmptyState from "./EmptyState";
 import Note from "./Note";
 
 export default ({ notes, onUpdate, onDelete }) => {
@@ -10,14 +11,16 @@ export default ({ notes, onUpdate, onDelete }) => {
       marginTop: 20,
     }}
   >
-    ${notes.map(
-      (note) =>
-        html`<${Note}
-          key=${note.id}
-          note=${note}
-          onUpdate=${onUpdate}
-          onDelete=${onDelete}
-        />`,
-    )}
+    ${notes.length === 0
+      ? html`<${EmptyState} />`
+      : notes.map(
+          (note) =>
+            html`<${Note}
+              key=${note.id}
+              note=${note}
+              onUpdate=${onUpdate}
+              onDelete=${onDelete}
+            />`,
+        )}
   </div>`;
 };
