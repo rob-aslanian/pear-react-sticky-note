@@ -12,20 +12,20 @@ import { createContext, useEffect, useRef, useState } from "react";
 const PeersContext = createContext();
 
 function PeersProvider({ name, topic, ...props }) {
-  const corestore = new Corestore(Pear.config.storage);
-  const hyperdrive = new Hyperdrive(corestore);
-  const [loaded, setLoaded] = useState(false);
+  const corestoreRef = useRef(new Corestore(Pear.config.storage));
+  const hyperdriveRef = useRef(new Hyperdrive(corestoreRef.current));
   const [peers, setPeers] = useState([]);
   const hyperswarm = useRef();
-  const hyperbee = new Hyperbee(corestore.get({ name: "peers" }), {
-    keyEncoding: "utf-8",
-    valueEncoding: "json",
-  });
+  const hyperbee = new Hyperbee(
+    corestoreRef.current.get({ name: "peers" }),
+    {
+      keyEncoding: "utf-8",
+      valueEncoding: "json",
+    },
+  );
 
   useEffect(() => {
-    loadPeers()
-      .then(initSwarm)
-      .then(() => setLoaded(true));
+    loadPeers().then(initSwarm);
 
     async function loadPeers() {
       for await (const {
@@ -38,7 +38,9 @@ function PeersProvider({ name, topic, ...props }) {
 
     async function initSwarm() {
       hyperswarm.current = new Hyperswarm({
-        keyPair: await corestore.createKeyPair("first-app"),
+        keyPair: await corestoreRef.current.createKeyPair(
+          "first-app",
+        ),
       });
 
       console.log(hyperswarm.current);
@@ -52,13 +54,13 @@ function PeersProvider({ name, topic, ...props }) {
         const rpc = new ProtomuxRPC(conn);
         console.log("[connection joined]", info);
 
-        corestore.replicate(conn);
+        corestoreRef.current.replicate(conn);
 
         rpc.respond("whoareyou", async (req) => {
           console.log("[whoareyou respond]");
           return Buffer.from(
             JSON.stringify({
-              driveKey: hyperdrive.key.toString("hex"),
+              driveKey: hyperdriveRef.current.key.toString("hex"),
             }),
           );
         });
@@ -92,7 +94,7 @@ function PeersProvider({ name, topic, ...props }) {
     console.log(
       `[PeersProvider] add() key=${key} driveKey=${driveKey}`,
     );
-    const hyperdrive = new Hyperdrive(corestore, driveKey);
+    const hyperdrive = new Hyperdrive(corestoreRef.current, driveKey);
     await hyperdrive.ready();
     await hyperbee.put(key, { driveKey });
 
@@ -107,8 +109,9 @@ function PeersProvider({ name, topic, ...props }) {
   return html`
     <${PeersContext.Provider}
       value=${{
-        loaded,
         peers,
+        corestore: corestoreRef.current,
+        hyperdrive: hyperdriveRef.current,
       }}
       ...${props}
     />
