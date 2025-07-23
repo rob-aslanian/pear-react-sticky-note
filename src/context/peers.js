@@ -52,7 +52,7 @@ function PeersProvider({ name, topic, ...props }) {
       hyperswarm.current.on("connection", async (conn, info) => {
         const key = conn.remotePublicKey.toString("hex");
         const rpc = new ProtomuxRPC(conn);
-        console.log("[connection joined]", info);
+        console.log("[connection joined]", key);
 
         corestoreRef.current.replicate(conn);
 

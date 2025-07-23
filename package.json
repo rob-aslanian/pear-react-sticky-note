@@ -16,6 +16,7 @@
     }
   },
   "dependencies": {
+    "@ant-design/icons": "^6.0.0",
     "antd": "^5.26.6",
     "corestore": "^6.15.11",
     "downloads-folder": "^3.0.3",
