@@ -1,12 +1,19 @@
 /* global Pear */
 
 import { html } from "htm/react";
-import { createContext, useContext, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { generateDefaultNote } from "../utilities/defaultNote";
 import { PeersContext } from "./peers";
 
 const NoteContext = createContext();
 
 function NoteProvider({ ...props }) {
+  const [note, setNote] = useState({});
   const peers = useContext(PeersContext);
 
   useEffect(() => {
@@ -16,7 +23,7 @@ function NoteProvider({ ...props }) {
   async function initNote() {
     const exists = await peers.hyperdrive.exists("/meta/note.json");
     if (exists) return;
-    await updateNote({ id: "1" });
+    await updateNote(generateDefaultNote());
   }
 
   async function updateNote(note) {
@@ -28,6 +35,9 @@ function NoteProvider({ ...props }) {
 
   async function getNote() {
     const buf = await peers.hyperdrive.get("/meta/note.json");
+    console.log(JSON.parse(buf), "c".repeat(100));
+
+    setNote(JSON.parse(buf));
   }
 
   useEffect(() => {
@@ -37,10 +47,7 @@ function NoteProvider({ ...props }) {
 
     watchForever();
     async function watchForever() {
-      for await (const _ of noteWatcher) {
-        // eslint-disable-line no-unused-vars
-        await getNote();
-      }
+      await getNote();
     }
 
     return async () => {
@@ -51,6 +58,7 @@ function NoteProvider({ ...props }) {
   return html`
     <${NoteContext.Provider}
       value=${{
+        note,
         updateNote,
       }}
       ...${props}

@@ -1,14 +1,6 @@
 import { Select } from "antd";
 import { html } from "htm/react";
-
-const colorOptions = [
-  "#ffff88",
-  "#f8d7da",
-  "#d4edda",
-  "#cce5ff",
-  "#fff3cd",
-  "#e2e3e5",
-];
+import { NOTE_COLORS } from "../constants/colors";
 
 export default ({ value, onChange }) => {
   return html`
@@ -17,7 +9,7 @@ export default ({ value, onChange }) => {
             style=${{ width: 100 }}
             onChange=${onChange}
         >
-            ${colorOptions.map(
+            ${NOTE_COLORS.map(
               (c) => html`
                     <${Select.Option} key=${c} value=${c}>
                         <div style=${{ background: c, height: 20 }} />

@@ -1,25 +1,11 @@
 import { DeleteOutlined, PushpinOutlined } from "@ant-design/icons";
 import { Button, Input, Tooltip } from "antd";
-import crypto from "crypto";
 import { html } from "htm/react";
 import { useState } from "react";
 import ColorPicker from "./ColorPicker.js";
 
-export default () => {
-  const [notes, setNotes] = useState([]);
+export default ({ note }) => {
   const [inputValue, setInputValue] = useState("");
-
-  const addNote = () => {
-    if (!inputValue.trim()) return;
-    const newNote = {
-      id: crypto.randomUUID(),
-      content: inputValue,
-    };
-    setNotes((prev) => [...prev, newNote]);
-    console.log(notes);
-
-    setInputValue("");
-  };
 
   const bringToFront = () => {
     // onUpdate(note.id, { zIndex: Date.now() });
@@ -30,8 +16,8 @@ export default () => {
       className="drag-handle"
       onMouseDown=${bringToFront}
       style=${{
-        background: "#fff3cd",
-        zIndex: 0,
+        background: note.color,
+        zIndex: note.zIndex,
         position: "absolute",
         borderRadius: 6,
         padding: 10,

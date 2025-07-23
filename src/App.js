@@ -2,8 +2,10 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button, Layout, Row, Typography } from "antd";
 import { html } from "htm/react";
 import { useContext, useEffect, useState } from "react";
-import AddNote from "./components/AddNote";
+import NoteBoard from "./components/NoteBoard";
+import { NoteContext } from "./context/note";
 import { PeersContext } from "./context/peers";
+import { generateDefaultNote } from "./utilities/defaultNote";
 const { Content } = Layout;
 const { Title } = Typography;
 
@@ -11,25 +13,19 @@ Pear.updates(() => Pear.reload());
 
 const App = () => {
   const peersContent = useContext(PeersContext);
+  const noteContext = useContext(NoteContext);
   const [notes, setNotes] = useState([]);
 
   useEffect(() => {
-    console.log(peersContent.peers);
+    // console.log(peersContent.peers);
   }, [peersContent.peers]);
 
+  useEffect(() => {
+    setNotes([noteContext.note]);
+  }, [noteContext.note]);
+
   const addNote = () => {
-    const newNote = {
-      id: crypto.randomUUID(),
-      text: "",
-      x: 100,
-      y: 100,
-      width: 200,
-      height: 200,
-      zIndex: Date.now(),
-      color: "#ffff88",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+    const newNote = generateDefaultNote();
     setNotes([...notes, newNote]);
   };
 
@@ -46,7 +42,7 @@ const App = () => {
             Add Note
           </${Button}>
         </${Row}>
-        <${AddNote} />
+        <${NoteBoard} notes=${notes}/>
       </${Content}>
     </${Layout}>
   `;
