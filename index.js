@@ -7,7 +7,9 @@ import { PeersProvider } from "./src/context/peers.js";
 const root = createRoot(document.querySelector("#root"));
 root.render(html`
   <${PeersProvider}
-    topic=${"6f4c6b537971744a6e6c6b586c574e6c6b7244424d6c4c754d707a7564456454"}
+    name=${
+      Pear.config.name
+    } topic=${"6f4c6b537971744a6e6c6b586c574e6c6b7244424d6c4c754d707a7564456454"}
   >
     <${NoteProvider}>
       <${App} />

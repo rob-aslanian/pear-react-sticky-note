@@ -34,11 +34,9 @@ function NoteProvider({ ...props }) {
   }
 
   async function updateNotes(notes) {
-    if (!notes?.length) return;
-
     await peers.hyperdrive.put(
       "/meta/notes.json",
-      Buffer.from(JSON.stringify([...notes])),
+      Buffer.from(JSON.stringify(notes ? [...notes] : [])),
     );
   }
 

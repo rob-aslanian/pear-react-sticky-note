@@ -16,13 +16,10 @@ function PeersProvider({ name, topic, ...props }) {
   const hyperdriveRef = useRef(new Hyperdrive(corestoreRef.current));
   const [peers, setPeers] = useState([]);
   const hyperswarm = useRef();
-  const hyperbee = new Hyperbee(
-    corestoreRef.current.get({ name: "peers" }),
-    {
-      keyEncoding: "utf-8",
-      valueEncoding: "json",
-    },
-  );
+  const hyperbee = new Hyperbee(corestoreRef.current.get({ name }), {
+    keyEncoding: "utf-8",
+    valueEncoding: "json",
+  });
 
   useEffect(() => {
     loadPeers().then(initSwarm);
