@@ -36,7 +36,9 @@ export default ({ hyperdrive }) => {
             }
 
             <p>
-              <strong>Updated at:</strong> ${note.updatedAt}
+              <strong>Updated at:</strong> ${new Date(
+                note.updatedAt,
+              ).toLocaleString()}
             </p>
 
             <div style=${{ display: "flex", alignItems: "center" }}>
